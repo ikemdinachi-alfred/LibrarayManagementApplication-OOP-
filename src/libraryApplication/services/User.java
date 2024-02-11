@@ -22,6 +22,11 @@ public class User {
         this.registrationDate = LocalDate.parse(registrationDate);
     }
 
+    public User(String username, String password){
+        this.username = username;
+        this.password = password;
+    }
+
     public void setUserType(UserType userType) {
         this.userType = userType;
     }
@@ -64,6 +69,10 @@ public class User {
 
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override
