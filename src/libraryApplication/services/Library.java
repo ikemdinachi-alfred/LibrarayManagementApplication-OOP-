@@ -35,26 +35,28 @@ public class Library {
     }
     public String loginAdmin(String username, String password){
         user = new User(username,password);
-        user.setUserType(UserType.ADMIN);
         loginValidation(username,password);
+        user.setUserType(UserType.ADMIN);
         return "login successfully.. ";
     }
+
     public String loginReader(String username, String password){
         user = new User(username,password);
         user.setUserType(UserType.READER);
         loginValidation(username,password);
-        return "login successfully.. ";
+        return "login successfully..";
     }
 
     private void loginValidation(String username, String password){
-        for(User user1: users) if (!user1.getUsername().equals(username) && !user1.getPassword().equals(password))throw new InvalidDetailsExceptions("wrong details");
-
+        for(User user1: users) {
+            if (!user1.getUsername().equals(username) || !user1.getPassword().equals(password)) throw new InvalidDetailsExceptions("wrong details");
+        }
 
     }
 
     private void userExist(String phoneNumber, String username){
         for (User user1:users){
-            if (user1.getPhoneNumber().equals(phoneNumber) && user1.getUsername().equals(username)) throw new UserExistExceptions("Your details already exist ");
+            if (user1.getPhoneNumber().equals(phoneNumber) || user1.getUsername().equals(username)) throw new UserExistExceptions("Your details already exist ");
         }
     }
 
@@ -64,7 +66,7 @@ public class Library {
        books.add(book);
        book.setAvailable(true);
        totalNumberOfBooks+=1;
-       return "login successful.. ";
+       return "book added successfully..";
     }
 
     private void bookExist(String title, String author){
@@ -86,4 +88,5 @@ public class Library {
     public int getTotalNumberOfBooks() {
         return totalNumberOfBooks;
     }
+
 }
