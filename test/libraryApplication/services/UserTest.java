@@ -16,7 +16,7 @@ class UserTest {
         LocalDate registrationDate = LocalDate.parse("2024-05-15");
        String date = String.valueOf(registrationDate);
 
-        user =  new User("id","firstName","lastName","username","password",date);
+        user =  new User("id","firstName","lastName","username","phoneNumber","password",date);
     }
     @Test
     void testAdminUserType() {
@@ -62,6 +62,14 @@ class UserTest {
         String date = String.valueOf(user.getRegistrationDate());
 
         assertEquals("2024-01-14",date);
+    }
+    @Test
+    void tsetThatGetFullNameReturnsFirstAndLastName(){
+        assertEquals("firstName lastName", user.getfullName());
+    }
+    @Test
+    void testMethodGetPhoneNumber(){
+        assertEquals("phoneNumber",user.getPhoneNumber());
     }
 
 }

@@ -39,4 +39,12 @@ public class Book {
     public String getPages() {
         return pages;
     }
+    public String toString(){
+        return String.format("""
+                Book Title: %s
+                Book Author: %s
+                Book pages: %s
+                Book ID; %s
+                """,title,author,pages,id);
+    }
 }

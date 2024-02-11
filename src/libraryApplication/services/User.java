@@ -8,14 +8,16 @@ public class User {
     private String lastName;
     private String username;
     private String password;
+    private String phoneNumber;
     LocalDate registrationDate;
     UserType userType;
 
-    public User(String id, String firstName, String lastName, String username, String password, String registrationDate) {
+    public User(String id, String firstName, String lastName, String username,String phoneNumber, String password, String registrationDate) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
+        this.phoneNumber = phoneNumber;
         this.password = password;
         this.registrationDate = LocalDate.parse(registrationDate);
     }
@@ -55,8 +57,26 @@ public class User {
     public UserType getUserType() {
         return userType;
     }
-    public String getfullName(){
-        return firstName + " "+ lastName;
+
+    public String getfullName() {
+        return firstName + " " + lastName;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("""
+                Full Name: %s
+                UserName: %s
+                Password: %s
+                Phone Number: %s
+                Identity Number: %s
+                User Status: %s
+                Registration Date: %s
+                
+                """,getfullName(),username,password,phoneNumber,id,userType,registrationDate);
+    }
 }
