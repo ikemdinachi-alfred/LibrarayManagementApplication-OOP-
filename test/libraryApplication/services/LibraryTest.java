@@ -1,4 +1,5 @@
 package libraryApplication.services;
+import libraryApplication.exceptions.BookNotAvailableException;
 import libraryApplication.exceptions.InvalidDetailsExceptions;
 import libraryApplication.exceptions.UserExistExceptions;
 import org.junit.jupiter.api.Test;
@@ -160,7 +161,7 @@ class LibraryTest {
     String id = "id";
     String pages = "500";
     String book = library.addBook(id,title,author,pages);
-    assertEquals(1,library.getTotalNumberOfBooks());
+    assertEquals(1,library.getTotalNumberOfBooksInShelf());
     assertEquals("book added successfully..",book);
 
     }
@@ -171,10 +172,10 @@ class LibraryTest {
         String id = "id";
         String pages = "500";
         String book = library.addBook(id,title,author,pages);
-        assertEquals(1,library.getTotalNumberOfBooks());
+        assertEquals(1,library.getTotalNumberOfBooksInShelf());
         assertEquals("book added successfully..",book);
         String book1 = library.addBook(id,"you and me",author,pages);
-        assertEquals(2, library.getTotalNumberOfBooks());
+        assertEquals(2, library.getTotalNumberOfBooksInShelf());
         assertEquals("book added successfully..",book1);
 
     }
@@ -185,13 +186,88 @@ class LibraryTest {
         String id = "id";
         String pages = "500";
         String book = library.addBook(id,title,author,pages);
-        assertEquals(1,library.getTotalNumberOfBooks());
+        assertEquals(1,library.getTotalNumberOfBooksInShelf());
         assertEquals("book added successfully..",book);
         String book1 = library.addBook(id,"you and me",author,pages);
-        assertEquals(2, library.getTotalNumberOfBooks());
+        assertEquals(2, library.getTotalNumberOfBooksInShelf());
         assertEquals("book added successfully..",book1);
         System.out.println(library.displayBooks());
     }
+    @Test
+    void testThat_users_can_borrow_Available_books(){
+        String title = "title";
+        String author = "author";
+        String id = "id";
+        String pages = "500";
+        String book = library.addBook(id,title,author,pages);
+        assertEquals(1,library.getTotalNumberOfBooksInShelf());
+        assertEquals("book added successfully..",book);
+        String book1 = library.addBook(id,"you and me","franklyn",pages);
+        assertEquals(2, library.getTotalNumberOfBooksInShelf());
+        assertEquals("book added successfully..",book1);
+        String message = "you have successfully borrowed Title: " + title +"\tAuthor: "+author;
+        assertEquals(message,library.borrowBook(title,author));
+        assertEquals(message,library.getMessageForBorrowedBook(title,author));
+
+    }
+    @Test
+    void testThat_user_can_not_borrow_unavailable_book(){
+        String title = "title";
+        String author = "author";
+        String id = "id";
+        String pages = "500";
+        String book = library.addBook(id,title,author,pages);
+        assertEquals(1,library.getTotalNumberOfBooksInShelf());
+        assertEquals("book added successfully..",book);
+        String book1 = library.addBook(id,"you and me","franklyn",pages);
+        assertEquals(2, library.getTotalNumberOfBooksInShelf());
+        assertEquals("book added successfully..",book1);
+        library.borrowBook(title,author);
+        //check that borrowed book equals 0ne
+        assertEquals(1,library.getTotalNumberOfBorrowedBook());
+        // check that borrowed book can not be borrowed again
+        assertThrows(BookNotAvailableException.class,()-> library.borrowBook(title,author));
+
+    }
+    @Test
+    void testThat_when_user_borrow_available_book_it_is_added_to_borrowed_book(){
+        String title = "title";
+        String author = "author";
+        String id = "id";
+        String pages = "500";
+        String book = library.addBook(id,title,author,pages);
+        assertEquals(1,library.getTotalNumberOfBooksInShelf());
+        assertEquals("book added successfully..",book);
+        String book1 = library.addBook(id,"you and me","franklyn",pages);
+        assertEquals(2, library.getTotalNumberOfBooksInShelf());
+        assertEquals("book added successfully..",book1);
+        library.borrowBook(title,author);
+        //check that borrowed book equals 0ne
+        assertEquals(1,library.getTotalNumberOfBorrowedBook());
+        // check that borrowed book list contain borrowed book
+        System.out.println(library.displayBorrowedBook());
+    }@Test
+    void testThat_when_user_borrow_available_book_it_is_added_to_borrowed_book_and_its_deleted_after_its_returned(){
+        String title = "title";
+        String author = "author";
+        String id = "id";
+        String pages = "500";
+        String book = library.addBook(id,title,author,pages);
+        assertEquals(1,library.getTotalNumberOfBooksInShelf());
+        assertEquals("book added successfully..",book);
+        String book1 = library.addBook(id,"you and me","franklyn",pages);
+        assertEquals(2, library.getTotalNumberOfBooksInShelf());
+        assertEquals("book added successfully..",book1);
+        library.borrowBook(title,author);
+        //check that borrowed book equals 0ne
+        assertEquals(1,library.getTotalNumberOfBorrowedBook());
+        assertEquals(1,library.getTotalNumberOfBooksInShelf());
+        //check that if book is retured added book is back to two
+        library.returnBorrowedBook(title,author);
+       assertEquals(2,library.getTotalNumberOfBooksInShelf());
+
+    }
+
 
 
 }
